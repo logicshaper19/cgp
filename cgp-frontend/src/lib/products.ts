@@ -1,19 +1,18 @@
 // src/lib/products.ts
-import { createClient } from '@supabase/supabase-js';
-import { FinancialProduct } from '../types/supabase';
+import supabase from './supabaseClient'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-export async function searchProducts(query: string): Promise<FinancialProduct[]> {
+export async function searchProducts(query: string) {
   const { data, error } = await supabase
-    .from('financial_products')
-    .select()
-    .or(`isin.ilike.%${query}%,name.ilike.%${query}%`)
-    .limit(10);
+    .from('financial_products_extended') // Correct table name
+    .select('*')
+    .or(`isin.ilike.%${query}%,company_name.ilike.%${query}%`)
+    .limit(10)
 
-  if (error) throw error;
-  return data || [];
+  if (error) {
+    console.error('Supabase error:', error)
+    throw error
+  }
+
+  console.log('Supabase query data:', data) // Debug log
+  return data
 }

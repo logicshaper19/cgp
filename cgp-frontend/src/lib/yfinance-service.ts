@@ -1,37 +1,19 @@
 // src/lib/yfinance-service.ts
-import { createClient } from '@supabase/supabase-js'
-import type { FinancialProduct } from '@/types/supabase'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
-
-interface YFinanceProduct {
-  isin: string;
-  longName: string;
-  regularMarketPrice: number;
-  currency: string;
-  fundFamily?: string;
-  category?: string;
-  totalAssets?: number;
-  yield?: number;
-  riskRating?: number;
-}
+import supabase from './supabaseClient'
 
 export async function fetchAndStoreProduct(isin: string) {
   try {
     // Call Python yfinance script
     const response = await fetch(`/api/yfinance/fetch?isin=${isin}`)
-    const yahooData: YFinanceProduct = await response.json()
+    const yahooData = await response.json()
 
     // Transform and store in Supabase
     const product = {
       isin: yahooData.isin,
       company_name: yahooData.longName,
-      nav_value: yahooData.regularMarketPrice,
+      nav_value: yahooData.regularMarketPrice !== "N/A" ? yahooData.regularMarketPrice : null,
       currency: yahooData.currency,
-      sri_rating: yahooData.riskRating || 3, // Default value
+      sri_rating: yahooData.sri_rating || 3, // Default value
       category: yahooData.category,
       manager_name: yahooData.fundFamily
     }
