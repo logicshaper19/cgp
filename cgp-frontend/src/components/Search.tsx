@@ -83,7 +83,7 @@ export default function Search() {
       )}
 
       <div className="mt-4 space-y-4">
-        {results.map((product) => (
+        {Array.isArray(results) && results.map((product) => (
           <div key={product.id} className="p-4 border rounded bg-gray-800 text-white">
             <h3 className="font-bold">{product.name}</h3>
             <p>ISIN: {product.isin}</p>
