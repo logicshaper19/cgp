@@ -1,0 +1,7 @@
+2024-12-28 16:58:23,382 - ERROR - Error fetching data for ISIN FR0010148981: module 'requests.cookies' has no attribute 'update'
+2024-12-29 03:36:57,824 - ERROR - ValueError fetching data for ISIN LU1299311164: API request failed with status code 401
+2024-12-29 03:38:10,038 - ERROR - ValueError fetching data for ISIN FR0010148981: API request failed with status code 401
+2024-12-29 03:41:47,989 - ERROR - Error fetching crumb: Crumb not found in response
+2024-12-29 03:41:47,990 - ERROR - Error fetching data for ISIN FR0010148981: Failed to fetch crumb
+2024-12-29 03:43:49,086 - ERROR - Error fetching crumb: HTTPSConnectionPool(host='finance.yahoo.com', port=443): Max retries exceeded with url: /quote/AAPL (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x10dbdbdd0>: Failed to resolve 'finance.yahoo.com' ([Errno 8] nodename nor servname provided, or not known)"))
+2024-12-29 03:43:49,089 - ERROR - Error fetching data for ISIN FR0010148981: Failed to fetch crumb

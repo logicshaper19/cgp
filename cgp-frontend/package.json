@@ -14,8 +14,10 @@
     "@heroicons/react": "^2.2.0",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.47.10",
+    "apexcharts": "^4.3.0",
     "next": "latest",
     "react": "latest",
+    "react-apexcharts": "^1.7.0",
     "react-dom": "latest",
     "tailwindcss": "latest"
   },

@@ -2,15 +2,13 @@
 'use client'
 
 import { useState } from 'react';
-import { FinancialProduct } from '@/types/supabase';
-import { searchProducts } from '@/lib/products';
-import { fetchAndStoreProduct } from '@/lib/yfinance-service';
+import { useRouter } from 'next/router';
 
 export default function Search() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<FinancialProduct[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   async function handleSearch() {
     try {
@@ -22,22 +20,9 @@ export default function Search() {
         return;
       }
 
-      console.log('Search query:', query); // Debug log
-      let data = await searchProducts(query);
-      console.log('Database search results:', data); // Debug log
-
-      if (data.length === 0) {
-        // If no results from database, fetch from yfinance API
-        console.log('Fetching from yfinance API');
-        const product = await fetchAndStoreProduct(query);
-        data = [product];
-      }
-
-      setResults(data);
+      router.push(`/results?isin=${query}`);
     } catch (err) {
-      console.error('Search error details:', err);
       setError(err instanceof Error ? err.message : 'Search failed. Please try again.');
-      setResults([]);
     } finally {
       setLoading(false);
     }
@@ -67,16 +52,6 @@ export default function Search() {
           {error}
         </div>
       )}
-
-      <div className="mt-4 space-y-4">
-        {results.map((product, index) => (
-          <div key={product.id || index} className="p-4 border rounded bg-gray-800 text-white">
-            <h3 className="font-bold">{product.company_name}</h3>
-            <p>Description: {product.description}</p>
-            <p>Price: {product.price !== "N/A" ? `${product.price} ${product.currency}` : "Price not available"}</p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
